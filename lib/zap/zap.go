@@ -17,7 +17,7 @@ func GetLogger() *zap.Logger {
 			LevelKey:         "Level",
 			TimeKey:          "",
 			NameKey:          "Name",
-			CallerKey:        "Caller",
+			CallerKey:        "caller",
 			FunctionKey:      "",
 			StacktraceKey:    "",
 			SkipLineEnding:   false,
