@@ -11,7 +11,7 @@ func GetLogger() *zap.Logger {
 
 	myConfig := zap.Config{
 		Level:    level,
-		Encoding: "json",
+		Encoding: "console",
 		EncoderConfig: zapcore.EncoderConfig{
 			MessageKey:       "Msg",
 			LevelKey:         "Level",
