@@ -25,7 +25,7 @@ func GetLogger() *zap.Logger {
 			EncodeLevel:      zapcore.CapitalColorLevelEncoder,
 			EncodeTime:       zapcore.ISO8601TimeEncoder,
 			EncodeDuration:   zapcore.StringDurationEncoder,
-			EncodeCaller:     zapcore.ShortCallerEncoder,
+			EncodeCaller:     zapcore.FullCallerEncoder,
 			ConsoleSeparator: "",
 		},
 		OutputPaths:      []string{"stdout"},
