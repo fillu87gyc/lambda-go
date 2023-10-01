@@ -1,9 +1,15 @@
 package zap
 
 import (
+	"fmt"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"runtime"
 )
+
+type Logger struct {
+	logger *zap.Logger
+}
 
 func GetLogger() *zap.Logger {
 	level := zap.NewAtomicLevel()
@@ -25,7 +31,7 @@ func GetLogger() *zap.Logger {
 			EncodeLevel:      zapcore.CapitalColorLevelEncoder,
 			EncodeTime:       zapcore.ISO8601TimeEncoder,
 			EncodeDuration:   zapcore.StringDurationEncoder,
-			EncodeCaller:     zapcore.FullCallerEncoder,
+			EncodeCaller:     zapcore.ShortCallerEncoder,
 			ConsoleSeparator: "",
 		},
 		OutputPaths:      []string{"stdout"},
@@ -33,4 +39,11 @@ func GetLogger() *zap.Logger {
 	}
 	logger, _ := myConfig.Build()
 	return logger
+}
+
+func InfoSkip(msg string, skip int) {
+	logger := GetLogger()
+	_, file, line, _ := runtime.Caller(skip)
+	m := fmt.Sprintf("%s:%d %s", file, line, msg)
+	logger.Info(m)
 }

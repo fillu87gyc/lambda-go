@@ -5,6 +5,5 @@ import (
 )
 
 func main() {
-	logger := zap.GetLogger()
-	logger.Info("hello world")
+	zap.InfoSkip("main.go:9", 1)
 }
