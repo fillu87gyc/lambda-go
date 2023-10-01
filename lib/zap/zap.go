@@ -2,6 +2,7 @@ package zap
 
 import (
 	"fmt"
+	"github.com/fillu87gyc/lambda-go/lib"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"runtime"
@@ -15,7 +16,13 @@ func GetLogger() *zap.Logger {
 	level := zap.NewAtomicLevel()
 	level.SetLevel(zapcore.DebugLevel)
 
-	myConfig := zap.Config{
+	myConfig := myConfig(level)
+	logger, _ := myConfig.Build()
+	return logger
+}
+
+func myConfig(level zap.AtomicLevel) zap.Config {
+	return zap.Config{
 		Level:    level,
 		Encoding: "console",
 		EncoderConfig: zapcore.EncoderConfig{
@@ -37,13 +44,18 @@ func GetLogger() *zap.Logger {
 		OutputPaths:      []string{"stdout"},
 		ErrorOutputPaths: []string{"stderr"},
 	}
-	logger, _ := myConfig.Build()
-	return logger
 }
 
 func InfoSkip(msg string, skip int) {
-	logger := GetLogger()
+	level := zap.NewAtomicLevel()
+	level.SetLevel(zapcore.DebugLevel)
+	cfg := myConfig(level)
+	cfg.EncoderConfig.EncodeCaller = nil
+	logger, _ := cfg.Build()
+
 	_, file, line, _ := runtime.Caller(skip)
-	m := fmt.Sprintf("%s:%d %s", file, line, msg)
+	root := lib.ProjectRoot()
+	underRoot := file[len(root)+1:]
+	m := fmt.Sprintf("%s:%d\t%s", underRoot, line, msg)
 	logger.Info(m)
 }
