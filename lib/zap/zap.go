@@ -46,7 +46,7 @@ func myConfig(level zap.AtomicLevel) zap.Config {
 			EncodeCaller:     zapcore.ShortCallerEncoder,
 			ConsoleSeparator: "",
 		},
-		OutputPaths:      []string{"stdout"},
+		OutputPaths:      []string{"stdout", "./log.txt"},
 		ErrorOutputPaths: []string{"stderr"},
 	}
 	return c
